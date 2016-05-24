@@ -19,7 +19,7 @@ public class LivroDAOImpl extends GetConnection implements LivroDAO<Livro> {
 		try {
 			Statement stmt = connection.createStatement();
 			stmt.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS livro (id int, titulo varchar(50), autor varchar(50), emprestado boolean )");
+					"CREATE TABLE IF NOT EXISTS livro (id bigint(size) zerofill not null auto_increment, titulo varchar(50), autor varchar(50), emprestado boolean )");
 			stmt.close();
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
