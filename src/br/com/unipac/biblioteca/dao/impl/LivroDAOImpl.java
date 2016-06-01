@@ -19,7 +19,7 @@ public class LivroDAOImpl extends GetConnection implements LivroDAO<Livro> {
 		try {
 			Statement stmt = connection.createStatement();
 			stmt.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS livro (id bigint(size) zerofill not null auto_increment, titulo varchar(50), autor varchar(50), emprestado boolean )");
+					"CREATE TABLE IF NOT EXISTS livro (id bigint(size) zerofill not null auto_increment, titulo varchar(50), autor varchar(50), emprestado integer )");
 			stmt.close();
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
@@ -73,7 +73,70 @@ public class LivroDAOImpl extends GetConnection implements LivroDAO<Livro> {
 		
 		return livros;
 	}
+	
+	@Override
+	public Livro listarPorId(Long livroId) {
+		Connection connection = abreConexao();
+		Livro livro = null;
+		try {
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM livro WEHRE id_livro = " + livroId);
+			
+			if (rs.next()) {
+				livro = new Livro();
+				Long id = rs.getLong("id");
+				String titulo = rs.getString("titulo");
+				String autor = rs.getString("autor");
+				boolean emprestado = rs.getBoolean("emprestado");
+				
+				livro.setId(id);
+				livro.setTitulo(titulo);
+				livro.setAutor(autor);
+				livro.setEmprestado(emprestado);
+				
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		closeConexao();
+		
+		return livro;
+	}
 
+	@Override
+	public Livro listarPorNome(String nomeLivro) {
+		Connection connection = abreConexao();
+		Livro livro = null;
+		try {
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM livro WHERE titulo = " + nomeLivro);
+			
+			if (rs.next()) {
+				livro = new Livro();
+				Long id = rs.getLong("id");
+				String titulo = rs.getString("titulo");
+				String autor = rs.getString("autor");
+				boolean emprestado = rs.getBoolean("emprestado");
+				
+				livro.setId(id);
+				livro.setTitulo(titulo);
+				livro.setAutor(autor);
+				livro.setEmprestado(emprestado);
+				
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		closeConexao();
+		
+		return livro;
+	}
 	@Override
 	public void remover(Livro livro) {
 		Connection connection = abreConexao();

@@ -18,7 +18,7 @@ public class PessoaDAOImpl extends GetConnection implements PessoaDAO<Pessoa> {
 		Connection connection = abreConexao();
 		try {
 			Statement stmt = connection.createStatement();
-			stmt.executeUpdate("CREATE TABLE pessoa (id bigint(size) zerofill not null auto_increment, nome varchar(50), email varchar(50) )");
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS pessoa (id bigint(size) zerofill not null auto_increment, nome varchar(50), email varchar(50) )");
 			stmt.close();
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
@@ -70,6 +70,62 @@ public class PessoaDAOImpl extends GetConnection implements PessoaDAO<Pessoa> {
 		return null;
 	}
 
+	@Override
+	public Pessoa listarPorId(Long idPessoa) {
+		Connection connection = abreConexao();
+		Pessoa pessoa = null;
+		try {
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM pessoa WHERE id_pessoa = " + idPessoa);
+			
+			if (rs.next()) {
+				pessoa = new Pessoa();
+				Long id = rs.getLong("id");
+				String name = rs.getString("nome");
+				String email = rs.getString("email");
+				
+				pessoa.setId(id);
+				pessoa.setNome(name);
+				pessoa.setEmail(email);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		closeConexao();
+		return pessoa;
+	}
+	
+	@Override
+	public Pessoa listarPorNome(String nomePessoa) {
+		Connection connection = abreConexao();
+		Pessoa pessoa = null;
+		try {
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM pessoa WHERE nome = " + nomePessoa);
+			
+			if (rs.next()) {
+				pessoa = new Pessoa();
+				Long id = rs.getLong("id");
+				String name = rs.getString("nome");
+				String email = rs.getString("email");
+				
+				pessoa.setId(id);
+				pessoa.setNome(name);
+				pessoa.setEmail(email);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		closeConexao();
+		return pessoa;
+	}
+	
 	@Override
 	public void remover(Pessoa pessoa) {
 		Connection connection = abreConexao();

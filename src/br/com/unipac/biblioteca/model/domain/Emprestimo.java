@@ -3,10 +3,11 @@ package br.com.unipac.biblioteca.model.domain;
 import java.util.Date;
 
 public class Emprestimo {
+	private Long id;
 	private Livro livro;
 	private Pessoa pessoa;
 	private Date emprestimo;
-	private Date Devolucao;
+	private Date devolucao;
 
 	public Livro getLivro() {
 		return livro;
@@ -33,11 +34,19 @@ public class Emprestimo {
 	}
 
 	public Date getDevolucao() {
-		return Devolucao;
+		return devolucao;
 	}
 
 	public void setDevolucao(Date devolucao) {
-		Devolucao = devolucao;
+		this.devolucao = devolucao;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

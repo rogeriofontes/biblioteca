@@ -1,5 +1,5 @@
 package br.com.unipac.biblioteca.dao;
 
-public interface EmprestimoDAO<T> extends GenericDAO<T> {
+public interface EmprestimoDAO<T> extends GenericDAO<T, Long> {
 
 }
